@@ -1,0 +1,16 @@
+/venv/
+/.vscode/
+*/__pycache__/
+*.pyc 
+*.pyo
+*.db
+
+*/migrations/
+db.sqlite3
+settings_local.py
+static/
+media/
+__pycache__/
+node_modules/
+*.log
+*.xlsx
