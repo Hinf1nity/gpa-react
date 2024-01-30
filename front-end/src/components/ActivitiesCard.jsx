@@ -1,7 +1,12 @@
 import PropTypes from "prop-types";
 import { Table } from "react-bootstrap";
 
-export const ActividadesTabla = ({ actividades }) => {
+export const ActivitiesCard = ({ actividades }) => {
+  // Sort the activities based on their dates
+  const sortedActividades = actividades.sort(
+    (a, b) => new Date(b.fecha) - new Date(a.fecha)
+  );
+
   return (
     <div className="py-4 mt-3">
       <h2>Actividades para Obtener Puntos GPA</h2>
@@ -15,14 +20,14 @@ export const ActividadesTabla = ({ actividades }) => {
           </tr>
         </thead>
         <tbody>
-          {actividades.map((actividad, index) => (
+          {sortedActividades.map((actividad, index) => (
             <tr key={index}>
               <td>{actividad.actividades}</td>
               <td>{actividad.fecha}</td>
               <td>{actividad.puntos_ac}</td>
               <td
                 className={
-                  actividad.estado !== "Finalizado"
+                  actividad.estado !== "Finalizada"
                     ? "text-success"
                     : "text-danger"
                 }
@@ -37,6 +42,6 @@ export const ActividadesTabla = ({ actividades }) => {
   );
 };
 
-ActividadesTabla.propTypes = {
+ActivitiesCard.propTypes = {
   actividades: PropTypes.array.isRequired,
 };

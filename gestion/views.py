@@ -49,12 +49,25 @@ class GestionView(viewsets.ViewSet):
             puntos_ac=request.data.get('puntos_gpa'),
             estado=request.data.get('estado')
         )
-        archivo = request.FILES.get('archivo[]')
-        actividad = request.data.get('actividad')
-        fecha = request.data.get('fecha')
-        self.guardar_archivo(archivo, actividad, fecha)
+        if request.data.get('estado') == 'Finalizada':
+            archivo = request.FILES.get('archivo[]')
+            actividad = request.data.get('actividad')
+            fecha = request.data.get('fecha')
+            self.guardar_archivo(archivo, actividad, fecha)
         response = {'message': 'Created successfully'}
         return Response(response, status=status.HTTP_201_CREATED)
+
+    def update(self, request, *args, **kwargs):
+        print(request.data)
+        actividades.objects.filter(
+            actividades=request.data.get('actividad')).update(estado=request.data.get('estado'))
+        if request.data.get('estado') == 'Finalizada':
+            archivo = request.FILES.get('archivo[]')
+            actividad = request.data.get('actividad')
+            fecha = actividades.objects.get(actividades=actividad).fecha
+            self.guardar_archivo(archivo, actividad, fecha)
+        response = {'message': 'Updated successfully'}
+        return Response(response, status=status.HTTP_200_OK)
 
     def encontrar_valor(self, archivo_excel, valor_a_buscar):
         wb = openpyxl.load_workbook(archivo_excel)

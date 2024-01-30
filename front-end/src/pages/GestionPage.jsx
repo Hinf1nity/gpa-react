@@ -1,7 +1,7 @@
 import { useCookies } from "react-cookie";
 import { PropTypes } from "prop-types";
 import { useForm } from "react-hook-form";
-import { postActivity } from "../api/tasks.api";
+import { postActivity, getActivities, updateActivity } from "../api/tasks.api";
 import { HeaderPage } from "../components/HeaderPage";
 import toast from "react-hot-toast";
 import {
@@ -14,15 +14,43 @@ import {
   Nav,
   Navbar,
 } from "react-bootstrap";
+import { useEffect, useState } from "react";
 
 export function GestionPage({ onLogout }) {
   const [, , removeCookie] = useCookies(["csrftoken"]);
+  const [actividades, setActividades] = useState([]);
+  const [showInput, setShowInput] = useState(false);
+  const [showInputUpdate, setShowInputUpdate] = useState(false);
+
+  const {
+    register: registerUpdate,
+    handleSubmit: handleSubmitUpdate,
+    //formState: { errors },
+    reset: resetUpdate,
+  } = useForm();
+
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    //formState: { errors: errorsPost },
     reset,
   } = useForm();
+
+  const fetchActivities = async () => {
+    try {
+      const response = await getActivities();
+      setActividades(
+        response.data.filter((actividad) => actividad.estado !== "Finalizada")
+      );
+      console.log(response);
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
+  useEffect(() => {
+    fetchActivities();
+  }, []);
 
   const onSubmit = async (data) => {
     try {
@@ -32,9 +60,24 @@ export function GestionPage({ onLogout }) {
       console.log(puntos_gpa);
       await postActivity(data);
       toast.success("Actividad posteada");
+      fetchActivities();
       reset();
     } catch (error) {
       console.log("Error al postear la actividad");
+      console.error(error.message);
+    }
+  };
+
+  const onSubmitUpdate = async (data) => {
+    try {
+      const actividad = data.id;
+      console.log(actividad);
+      await updateActivity(data.id, data);
+      toast.success("Actividad actualizada");
+      fetchActivities();
+      resetUpdate();
+    } catch (error) {
+      console.log("Error al actualizar la actividad");
       console.error(error.message);
     }
   };
@@ -46,6 +89,14 @@ export function GestionPage({ onLogout }) {
     } catch (error) {
       console.error(error.message);
     }
+  };
+
+  const handleShowInput = (value) => {
+    setShowInput(value === "Finalizada");
+  };
+
+  const handleShowInputUpdate = (value) => {
+    setShowInputUpdate(value === "Finalizada");
   };
 
   return (
@@ -71,22 +122,29 @@ export function GestionPage({ onLogout }) {
         <Container>
           <h1>Bienvenido Ing. Fabio R. Diaz Palacios</h1>
           <h2>Asignar GPA</h2>
-          <InputGroup className="mb-3" size="lg">
-            <InputGroup.Text id="Actividad">Actividad:</InputGroup.Text>
-            <Form.Control
-              type="text"
-              aria-describedby="Actividad"
-              {...register("actividad", { required: true })}
-            />
-          </InputGroup>
-          <InputGroup className="mb-3" size="lg">
-            <InputGroup.Text id="PuntosGpa">Puntos GPA:</InputGroup.Text>
-            <Form.Control
-              type="number"
-              aria-describedby="PuntosGpa"
-              {...register("puntos_gpa", { required: true })}
-            />
-          </InputGroup>
+          <Row>
+            <Col md="7">
+              <InputGroup className="mb-3" size="lg">
+                <InputGroup.Text id="Actividad">Actividad:</InputGroup.Text>
+                <Form.Control
+                  type="text"
+                  aria-describedby="Actividad"
+                  {...register("actividad", { required: true })}
+                />
+              </InputGroup>
+            </Col>
+            <Col>
+              <InputGroup className="mb-3" size="lg">
+                <InputGroup.Text id="PuntosGpa">Puntos GPA:</InputGroup.Text>
+                <Form.Control
+                  type="number"
+                  aria-describedby="PuntosGpa"
+                  {...register("puntos_gpa", { required: true })}
+                />
+              </InputGroup>
+            </Col>
+            <Col md="2"></Col>
+          </Row>
           <InputGroup className="mb-3" size="lg">
             <InputGroup.Text id="Fecha">Fecha:</InputGroup.Text>
             <Form.Control
@@ -109,6 +167,7 @@ export function GestionPage({ onLogout }) {
                 inline
                 style={{ marginRight: "60px" }}
                 {...register("estado")}
+                onChange={(e) => handleShowInput(e.target.value)}
               />
               <Form.Check
                 type="radio"
@@ -118,6 +177,7 @@ export function GestionPage({ onLogout }) {
                 inline
                 style={{ marginRight: "60px" }}
                 {...register("estado")}
+                onChange={(e) => handleShowInput(e.target.value)}
               />
               <Form.Check
                 type="radio"
@@ -127,24 +187,102 @@ export function GestionPage({ onLogout }) {
                 inline
                 style={{ marginRight: "60px" }}
                 {...register("estado")}
+                onChange={(e) => handleShowInput(e.target.value)}
                 defaultChecked
               />
             </Col>
           </Row>
-          <Form.Group controlId="Archivo" className="mb-3">
-            <Form.Label>Ingrese un archivo excel:</Form.Label>
-            <Form.Control
-              size="lg"
-              type="file"
-              {...register("archivo", { required: true })}
-            />
-          </Form.Group>
-          <br />
+          {showInput && (
+            <div>
+              <Form.Group controlId="Archivo" className="mb-3">
+                <Form.Label>Ingrese un archivo excel:</Form.Label>
+                <Form.Control
+                  size="lg"
+                  type="file"
+                  {...register("archivo", { required: true })}
+                />
+              </Form.Group>
+              <br />
+            </div>
+          )}
+
           <Button variant="primary" type="submit" size="lg">
             Guardar
           </Button>
         </Container>
       </form>
+      {actividades.length > 0 ? (
+        <div>
+          <hr />
+          <form
+            onSubmit={handleSubmitUpdate(onSubmitUpdate)}
+            encType="multipart/form-data"
+          >
+            <Container>
+              <h2>Edicion de eventos</h2>
+              <Form.Select
+                aria-label="Default select example mb-3"
+                size="lg"
+                {...registerUpdate("actividad")}
+              >
+                <option>Seleccione una actividad</option>
+                {actividades.map((actividad) => (
+                  <option key={actividad.id} value={actividad.actividades}>
+                    {actividad.actividades} - {actividad.estado}
+                  </option>
+                ))}
+              </Form.Select>
+              <Row className="justify-content-center">
+                <Col md="2"></Col>
+                <Col md="4">
+                  <h5 className="d-inline mr-4">Estado de la actividad:</h5>
+                </Col>
+                <Col>
+                  <Form.Check
+                    type="radio"
+                    label="Finalizada"
+                    name="estado"
+                    value="Finalizada"
+                    inline
+                    style={{ marginRight: "60px" }}
+                    {...registerUpdate("estado")}
+                    onChange={(e) => handleShowInputUpdate(e.target.value)}
+                  />
+                  <Form.Check
+                    type="radio"
+                    label="Proximamente"
+                    name="estado"
+                    value="Proximamente"
+                    inline
+                    defaultChecked
+                    style={{ marginRight: "60px" }}
+                    {...registerUpdate("estado")}
+                    onChange={(e) => handleShowInputUpdate(e.target.value)}
+                  />
+                </Col>
+              </Row>
+              {showInputUpdate && (
+                <div>
+                  <Form.Group controlId="Archivo" className="mb-3">
+                    <Form.Label>Ingrese un archivo excel:</Form.Label>
+                    <Form.Control
+                      size="lg"
+                      type="file"
+                      {...registerUpdate("archivo", { required: true })}
+                    />
+                  </Form.Group>
+                  <br />
+                </div>
+              )}
+              <Button variant="primary" type="submit" size="lg">
+                Guardar
+              </Button>
+            </Container>
+          </form>
+        </div>
+      ) : (
+        <div></div>
+      )}
     </div>
   );
 }

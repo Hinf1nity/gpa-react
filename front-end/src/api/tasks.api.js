@@ -46,3 +46,13 @@ export const postActivity = (data) => {
     },
   });
 };
+
+export const updateActivity = (id, data) => {
+  const token = getAccessToken();
+  return userApi.put(`gestion/actividades/${id}/`, data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Authorization: `Token ${token}`,
+    },
+  });
+};

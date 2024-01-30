@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { getUser, getActivities } from "../api/tasks.api";
 import { useState, useEffect } from "react";
 import { HeaderPage } from "../components/HeaderPage";
-import { ActividadesTabla } from "../components/ActivitiesCard";
+import { ActivitiesCard } from "../components/ActivitiesCard";
 import {
   Card,
   InputGroup,
@@ -99,7 +99,7 @@ export function EstudiantesPage() {
                 aria-label="Número de Carnet"
                 {...register("carnet", { required: true })}
                 onChange={(e) => {
-                  if (e.target.value.length > 6) {
+                  if (e.target.value.length > 6 && e.target.value.length < 9) {
                     handleInputChange(e.target.value);
                   } else {
                     setNombreCompleto("");
@@ -122,7 +122,7 @@ export function EstudiantesPage() {
             </Button>
           </form>
         </Card>
-        <ActividadesTabla actividades={actividades} />
+        <ActivitiesCard actividades={actividades} />
       </Container>
     </div>
   );

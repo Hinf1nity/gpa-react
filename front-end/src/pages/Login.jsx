@@ -19,7 +19,7 @@ export const Login = ({ onLogin }) => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    //formState: { errors },
   } = useForm();
   const [, setCookie] = useCookies(["csrftoken"]);
 

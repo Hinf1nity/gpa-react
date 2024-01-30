@@ -2,6 +2,10 @@ import { Table } from "react-bootstrap";
 import PropTypes from "prop-types";
 
 export function GpaCard({ puntos }) {
+  const totalPoints = puntos.reduce(
+    (total, punto) => total + punto.puntos_gpa,
+    0
+  );
   return (
     <Table>
       <thead>
@@ -19,6 +23,10 @@ export function GpaCard({ puntos }) {
             <td>{punto.puntos_gpa}</td>
           </tr>
         ))}
+        <tr>
+          <td colSpan="2">Total de puntos</td>
+          <td>{totalPoints}</td>
+        </tr>
       </tbody>
     </Table>
   );

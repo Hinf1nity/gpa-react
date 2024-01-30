@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { GpaCard } from "../components/GpaCard";
 import { HeaderPage } from "../components/HeaderPage";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Navbar, Nav } from "react-bootstrap";
 
 export function GpaPage() {
   const { carnet } = useParams();
@@ -35,6 +35,16 @@ export function GpaPage() {
         header1="Consultas Puntos GPA"
         paragraph="Bienvenido al Panel de Consultas para Verificar tus Puntos GPA"
       />
+      <Navbar bg="light" variant="light" expand="lg">
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Container>
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav>
+              <Nav.Link href="/">Inicio</Nav.Link>
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
       <Container>
         <Row className="justify-content-center">
           <Col md={8} className="text-center">
