@@ -50,10 +50,19 @@ class GestionView(viewsets.ViewSet):
             estado=request.data.get('estado')
         )
         if request.data.get('estado') == 'Finalizada':
-            archivo = request.FILES.get('archivo[]')
             actividad = request.data.get('actividad')
             fecha = request.data.get('fecha')
-            self.guardar_archivo(archivo, actividad, fecha)
+            if request.FILES.get('archivo[]') == None:
+                puntos.objects.create(
+                    actividad=actividad,
+                    fecha=fecha,
+                    puntos_gpa=request.data.get('puntos_est'),
+                    estudiante=estudiante.objects.get(
+                        ci=request.data.get('ci'))
+                )
+            else:
+                archivo = request.FILES.get('archivo[]')
+                self.guardar_archivo(archivo, actividad, fecha)
         response = {'message': 'Created successfully'}
         return Response(response, status=status.HTTP_201_CREATED)
 
@@ -62,10 +71,19 @@ class GestionView(viewsets.ViewSet):
         actividades.objects.filter(
             actividades=request.data.get('actividad')).update(estado=request.data.get('estado'))
         if request.data.get('estado') == 'Finalizada':
-            archivo = request.FILES.get('archivo[]')
             actividad = request.data.get('actividad')
             fecha = actividades.objects.get(actividades=actividad).fecha
-            self.guardar_archivo(archivo, actividad, fecha)
+            if request.FILES.get('archivo[]') == None:
+                puntos.objects.create(
+                    actividad=actividad,
+                    fecha=fecha,
+                    puntos_gpa=request.data.get('puntos_est'),
+                    estudiante=estudiante.objects.get(
+                        ci=request.data.get('ci'))
+                )
+            else:
+                archivo = request.FILES.get('archivo[]')
+                self.guardar_archivo(archivo, actividad, fecha)
         response = {'message': 'Updated successfully'}
         return Response(response, status=status.HTTP_200_OK)
 
@@ -88,14 +106,16 @@ class GestionView(viewsets.ViewSet):
         fila_encontrada, _ = self.encontrar_valor(
             'media/'+archivo_temporal, valor_a_buscar)
         df = pd.read_excel(
-            path, names=['Carnet', 'Nombre', 'Puntos'], index_col=None)
+            path, names=['Carnet', 'Nombre', 'Apellido', 'Puntos'], index_col=None)
         df = df.iloc[fila_encontrada - 1:]
         df = df.reset_index(drop=True)
         for i in range(len(df.axes[0])):
             print(df.iloc[i]['Nombre'])
+            print(df.iloc[i]['Apellido'])
             if estudiante.objects.filter(ci=df.iloc[i]['Carnet']).exists() == False:
                 estudiante.objects.create(
                     nombre=df.iloc[i]['Nombre'],
+                    apellido=df.iloc[i]['Apellido'],
                     ci=df.iloc[i]['Carnet'],
                 )
             puntos.objects.create(

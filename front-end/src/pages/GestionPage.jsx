@@ -3,6 +3,7 @@ import { PropTypes } from "prop-types";
 import { useForm } from "react-hook-form";
 import { postActivity, getActivities, updateActivity } from "../api/tasks.api";
 import { HeaderPage } from "../components/HeaderPage";
+import { AddPoints } from "../components/AddPoints";
 import toast from "react-hot-toast";
 import {
   InputGroup,
@@ -61,6 +62,7 @@ export function GestionPage({ onLogout }) {
       await postActivity(data);
       toast.success("Actividad posteada");
       fetchActivities();
+      handleShowInput("Proximamente");
       reset();
     } catch (error) {
       console.log("Error al postear la actividad");
@@ -75,6 +77,7 @@ export function GestionPage({ onLogout }) {
       await updateActivity(data.id, data);
       toast.success("Actividad actualizada");
       fetchActivities();
+      handleShowInput("Proximamente");
       resetUpdate();
     } catch (error) {
       console.log("Error al actualizar la actividad");
@@ -192,20 +195,7 @@ export function GestionPage({ onLogout }) {
               />
             </Col>
           </Row>
-          {showInput && (
-            <div>
-              <Form.Group controlId="Archivo" className="mb-3">
-                <Form.Label>Ingrese un archivo excel:</Form.Label>
-                <Form.Control
-                  size="lg"
-                  type="file"
-                  {...register("archivo", { required: true })}
-                />
-              </Form.Group>
-              <br />
-            </div>
-          )}
-
+          {showInput && <AddPoints register={register} />}
           <Button variant="primary" type="submit" size="lg">
             Guardar
           </Button>
@@ -261,18 +251,10 @@ export function GestionPage({ onLogout }) {
                   />
                 </Col>
               </Row>
-              {showInputUpdate && (
-                <div>
-                  <Form.Group controlId="Archivo" className="mb-3">
-                    <Form.Label>Ingrese un archivo excel:</Form.Label>
-                    <Form.Control
-                      size="lg"
-                      type="file"
-                      {...registerUpdate("archivo", { required: true })}
-                    />
-                  </Form.Group>
-                  <br />
-                </div>
+              {showInputUpdate ? (
+                <AddPoints register={registerUpdate} />
+              ) : (
+                <div></div>
               )}
               <Button variant="primary" type="submit" size="lg">
                 Guardar
