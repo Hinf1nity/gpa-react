@@ -6,7 +6,7 @@ from django.db import models
 class estudiante(models.Model):
     nombre = models.CharField(max_length=50)
     apellido = models.CharField(max_length=50, default="")
-    estado = models.BooleanField(default=True)
+    email = models.EmailField(max_length=50, default="")
     ci = models.IntegerField(unique=True, null=True, blank=True)
 
     def __str__(self):

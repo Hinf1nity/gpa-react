@@ -26,6 +26,7 @@ export function GestionPage({ onLogout }) {
   const {
     register: registerUpdate,
     handleSubmit: handleSubmitUpdate,
+    control: controlUpdate,
     //formState: { errors },
     reset: resetUpdate,
   } = useForm();
@@ -33,6 +34,7 @@ export function GestionPage({ onLogout }) {
   const {
     register,
     handleSubmit,
+    control,
     //formState: { errors: errorsPost },
     reset,
   } = useForm();
@@ -55,10 +57,7 @@ export function GestionPage({ onLogout }) {
 
   const onSubmit = async (data) => {
     try {
-      const actividad = data.actividad;
-      const puntos_gpa = data.puntos_gpa;
-      console.log(actividad);
-      console.log(puntos_gpa);
+      console.log(data);
       await postActivity(data);
       toast.success("Actividad posteada");
       fetchActivities();
@@ -195,7 +194,7 @@ export function GestionPage({ onLogout }) {
               />
             </Col>
           </Row>
-          {showInput && <AddPoints register={register} />}
+          {showInput && <AddPoints register={register} control={control} />}
           <Button variant="primary" type="submit" size="lg">
             Guardar
           </Button>
@@ -252,7 +251,7 @@ export function GestionPage({ onLogout }) {
                 </Col>
               </Row>
               {showInputUpdate ? (
-                <AddPoints register={registerUpdate} />
+                <AddPoints register={registerUpdate} control={controlUpdate} />
               ) : (
                 <div></div>
               )}

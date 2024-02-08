@@ -53,13 +53,20 @@ class GestionView(viewsets.ViewSet):
             actividad = request.data.get('actividad')
             fecha = request.data.get('fecha')
             if request.FILES.get('archivo[]') == None:
-                puntos.objects.create(
-                    actividad=actividad,
-                    fecha=fecha,
-                    puntos_gpa=request.data.get('puntos_est'),
-                    estudiante=estudiante.objects.get(
-                        ci=request.data.get('ci'))
-                )
+                carnets_puntos = []
+                for key in request.data.keys():
+                    if carnets_puntos != []:
+                        puntos.objects.create(
+                            actividad=actividad,
+                            fecha=fecha,
+                            puntos_gpa=request.data.get(key),
+                            estudiante=estudiante.objects.get(
+                                ci=carnets_puntos[0])
+                        )
+                        carnets_puntos = []
+                    elif 'carnets' in key:
+                        print(request.data.get(key))
+                        carnets_puntos.append(request.data.get(key))
             else:
                 archivo = request.FILES.get('archivo[]')
                 self.guardar_archivo(archivo, actividad, fecha)
@@ -74,13 +81,20 @@ class GestionView(viewsets.ViewSet):
             actividad = request.data.get('actividad')
             fecha = actividades.objects.get(actividades=actividad).fecha
             if request.FILES.get('archivo[]') == None:
-                puntos.objects.create(
-                    actividad=actividad,
-                    fecha=fecha,
-                    puntos_gpa=request.data.get('puntos_est'),
-                    estudiante=estudiante.objects.get(
-                        ci=request.data.get('ci'))
-                )
+                carnets_puntos = []
+                for key in request.data.keys():
+                    if carnets_puntos != []:
+                        puntos.objects.create(
+                            actividad=actividad,
+                            fecha=fecha,
+                            puntos_gpa=request.data.get(key),
+                            estudiante=estudiante.objects.get(
+                                ci=carnets_puntos[0])
+                        )
+                        carnets_puntos = []
+                    elif 'carnets' in key:
+                        print(request.data.get(key))
+                        carnets_puntos.append(request.data.get(key))
             else:
                 archivo = request.FILES.get('archivo[]')
                 self.guardar_archivo(archivo, actividad, fecha)
