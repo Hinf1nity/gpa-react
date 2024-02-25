@@ -2,8 +2,8 @@
 import { handleLogin } from "../api/tasks.api.js";
 import { useCookies } from "react-cookie";
 import { useForm } from "react-hook-form";
-import { PropTypes } from "prop-types";
 import { HeaderPage } from "../components/HeaderPage.jsx";
+import { UseAuth } from "../context/UseAuth";
 import toast from "react-hot-toast";
 import {
   Card,
@@ -15,12 +15,14 @@ import {
   Navbar,
 } from "react-bootstrap";
 
-export const Login = ({ onLogin }) => {
+export const Login = () => {
   const {
     register,
     handleSubmit,
     //formState: { errors },
   } = useForm();
+
+  const { login } = UseAuth();
   const [, setCookie] = useCookies(["csrftoken"]);
 
   const onSubmit = handleSubmit(async (data) => {
@@ -32,7 +34,7 @@ export const Login = ({ onLogin }) => {
           expires: new Date(Date.now() + 86400000),
         });
         toast.success("Inicio de sesión exitoso");
-        onLogin(); // Llama a la función de callback para indicar que el usuario ha iniciado sesión
+        login(); // Llama a la función de callback para indicar que el usuario ha iniciado sesión
       } else {
         toast.error("Usuario o contraseña incorrectos");
         console.log("Usuario o contraseña incorrectos");
@@ -86,8 +88,4 @@ export const Login = ({ onLogin }) => {
       </Container>
     </div>
   );
-};
-
-Login.propTypes = {
-  onLogin: PropTypes.func.isRequired,
 };

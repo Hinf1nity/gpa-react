@@ -1,9 +1,9 @@
 import { useCookies } from "react-cookie";
-import { PropTypes } from "prop-types";
 import { useForm } from "react-hook-form";
 import { postActivity, getActivities, updateActivity } from "../api/tasks.api";
 import { HeaderPage } from "../components/HeaderPage";
 import { AddPoints } from "../components/AddPoints";
+import { UseAuth } from "../context/UseAuth";
 import toast from "react-hot-toast";
 import {
   InputGroup,
@@ -17,8 +17,9 @@ import {
 } from "react-bootstrap";
 import { useEffect, useState } from "react";
 
-export function GestionPage({ onLogout }) {
+export function GestionPage() {
   const [, , removeCookie] = useCookies(["csrftoken"]);
+  const { logout } = UseAuth();
   const [actividades, setActividades] = useState([]);
   const [showInput, setShowInput] = useState(false);
   const [showInputUpdate, setShowInputUpdate] = useState(false);
@@ -87,7 +88,7 @@ export function GestionPage({ onLogout }) {
   const handleLogoutClick = async () => {
     try {
       removeCookie("csrftoken");
-      onLogout();
+      logout();
     } catch (error) {
       console.error(error.message);
     }
@@ -267,7 +268,3 @@ export function GestionPage({ onLogout }) {
     </div>
   );
 }
-
-GestionPage.propTypes = {
-  onLogout: PropTypes.func.isRequired,
-};
