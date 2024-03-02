@@ -117,6 +117,7 @@ export function EstudiantesPage() {
             ) : (
               <div></div>
             )}
+            <a href="/login">Crear licencia</a>
             <Button type="submit" variant="btn btn-success" size="lg">
               Buscar
             </Button>
