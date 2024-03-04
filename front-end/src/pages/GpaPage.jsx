@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { GpaCard } from "../components/GpaCard";
 import { HeaderPage } from "../components/HeaderPage";
-import { Container, Row, Col, Navbar, Nav } from "react-bootstrap";
+import { Container, Row, Col, Navbar, Nav, Tab, Tabs } from "react-bootstrap";
 
 export function GpaPage() {
   const { carnet } = useParams();
@@ -47,11 +47,19 @@ export function GpaPage() {
       </Navbar>
       <Container>
         <Row className="justify-content-center">
-          <Col md={8} className="text-center">
-            <h1 className="ml-4">{nombreEstudiante}</h1>
-            <h2 className="ml-4">Consulta de puntos GPA</h2>
-            <GpaCard puntos={puntos} />
-          </Col>
+          <h1 className="ml-4">{nombreEstudiante}</h1>
+          <Tabs defaultActiveKey="puntos" id="uncontrolled-tab-example">
+            <Tab eventKey="puntos" title="Puntos GPA">
+              <br />
+              <h2 className="ml-4">Consulta de puntos GPA</h2>
+              <GpaCard puntos={puntos} />
+            </Tab>
+            <Tab eventKey="licencias" title="Licencias">
+              <br />
+              <h2 className="ml-4">Consulta de licencias</h2>
+              <p>Consulta de licencias</p>
+            </Tab>
+          </Tabs>
         </Row>
       </Container>
     </div>
