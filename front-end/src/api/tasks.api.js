@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const userApi = axios.create({
+  //baseURL: "https://www.imt.ucb.edu.bo/cidimec/gpa/",
   baseURL: "http://localhost:8000/",
 });
 
