@@ -1,4 +1,3 @@
-import { useCookies } from "react-cookie";
 import { useForm } from "react-hook-form";
 import { postActivity, getActivities, updateActivity } from "../api/tasks.api";
 import { HeaderPage } from "../components/HeaderPage";
@@ -18,7 +17,6 @@ import {
 import { useEffect, useState } from "react";
 
 export function GestionPage() {
-  const [, , removeCookie] = useCookies(["csrftoken"]);
   const { logout } = UseAuth();
   const [actividades, setActividades] = useState([]);
   const [showInput, setShowInput] = useState(false);
@@ -87,7 +85,6 @@ export function GestionPage() {
 
   const handleLogoutClick = async () => {
     try {
-      removeCookie("csrftoken");
       logout();
     } catch (error) {
       console.error(error.message);

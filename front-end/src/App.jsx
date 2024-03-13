@@ -25,12 +25,15 @@ function AppRoutes() {
 
   return (
     <Routes>
-      <Route path="/" element={<EstudiantesPage />} />
-      <Route path="/:carnet" element={<GpaPage />} />
+      <Route path="/cidimec/gpa-imt" element={<EstudiantesPage />} />
+      <Route path="/cidimec/gpa-imt/:carnet" element={<GpaPage />} />
       <Route
         path="/cidimec/gpa-imt/login"
         element={
-          isLoggedIn ? <Navigate to="/cidimec/gpa-imt/gestion/" /> : <Login />
+          isLoggedIn
+            ? (console.log(isLoggedIn),
+              (<Navigate to="/cidimec/gpa-imt/gestion/" />))
+            : (console.log(isLoggedIn), (<Login />))
         }
       />
       <Route
