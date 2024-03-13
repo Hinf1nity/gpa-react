@@ -22,7 +22,7 @@ export function GpaPage() {
         setNombreEstudiante(res.data[0].nombre + " " + res.data[0].apellido);
       } catch (error) {
         toast.error("Estudiante no encontrado");
-        toNavigate("/");
+        toNavigate("/cidimec/gpa-imt/");
         console.log("Error al obtener el estudiante");
       }
     }
@@ -40,7 +40,7 @@ export function GpaPage() {
         <Container>
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav>
-              <Nav.Link href="/">Inicio</Nav.Link>
+              <Nav.Link href="/cidimec/gpa-imt">Inicio</Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Container>

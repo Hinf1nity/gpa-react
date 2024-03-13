@@ -20,6 +20,7 @@ export const Login = () => {
     register,
     handleSubmit,
     //formState: { errors },
+    reset,
   } = useForm();
 
   const { login } = UseAuth();
@@ -30,11 +31,13 @@ export const Login = () => {
       const accessToken = await handleLogin(data.username, data.password);
       if (accessToken != null) {
         setCookie("csrftoken", accessToken, {
-          path: "/",
+          path: "/cidimec/gpa-imt/",
           expires: new Date(Date.now() + 86400000),
+          secure: true,
         });
-        toast.success("Inicio de sesión exitoso");
+        reset();
         login(); // Llama a la función de callback para indicar que el usuario ha iniciado sesión
+        toast.success("Inicio de sesión exitoso");
       } else {
         toast.error("Usuario o contraseña incorrectos");
         console.log("Usuario o contraseña incorrectos");
@@ -55,7 +58,7 @@ export const Login = () => {
         <Container>
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav>
-              <Nav.Link href="/">Inicio</Nav.Link>
+              <Nav.Link href="/cidimec/gpa-imt/">Inicio</Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Container>

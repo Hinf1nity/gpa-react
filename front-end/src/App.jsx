@@ -4,7 +4,6 @@ import { Toaster } from "react-hot-toast";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { GestionPage } from "./pages/GestionPage";
 import { Login } from "./pages/Login";
-import { Logout } from "./components/Logout";
 import { EstudiantesPage } from "./pages/EstudiantesPage";
 import { GpaPage } from "./pages/GpaPage";
 import { AuthProvider } from "./context/AuthProvider";
@@ -26,19 +25,26 @@ function AppRoutes() {
 
   return (
     <Routes>
-      <Route path="/" element={<EstudiantesPage />} />
-      <Route path="/:carnet" element={<GpaPage />} />
+      <Route path="/cidimec/gpa-imt" element={<EstudiantesPage />} />
+      <Route path="/cidimec/gpa-imt/:carnet" element={<GpaPage />} />
       <Route
-        path="/login"
-        element={isLoggedIn ? <Navigate to="/gestion" /> : <Login />}
+        path="/cidimec/gpa-imt/login"
+        element={
+          isLoggedIn
+            ? (console.log(isLoggedIn),
+              (<Navigate to="/cidimec/gpa-imt/gestion/" />))
+            : (console.log(isLoggedIn), (<Login />))
+        }
       />
       <Route
-        path="/logout"
-        element={isLoggedIn ? <Logout /> : <Navigate to="/" />}
-      />
-      <Route
-        path="/gestion"
-        element={isLoggedIn ? <GestionPage /> : <Navigate to="/login" />}
+        path="/cidimec/gpa-imt/gestion"
+        element={
+          isLoggedIn ? (
+            <GestionPage />
+          ) : (
+            <Navigate to="/cidimec/gpa-imt/login/" />
+          )
+        }
       />
     </Routes>
   );

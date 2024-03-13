@@ -1,6 +1,8 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import PuntosDataView, StudentDataView, ActivitiesDataView
+from .estudiante.views import StudentDataView
+from .puntos.views import PuntosDataView
+from .actividades.views import ActivitiesDataView
 
 router = DefaultRouter()
 router.register(r'puntos', PuntosDataView, basename='estudiantes')
