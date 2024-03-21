@@ -19,7 +19,7 @@ export function GpaPage() {
         const response = await getUserGpa(carnet);
         setPuntos(response.data);
         const res = await getUser(carnet);
-        setNombreEstudiante(res.data[0].nombre + " " + res.data[0].apellido);
+        setNombreEstudiante(res.data[0].nombre);
       } catch (error) {
         toast.error("Estudiante no encontrado");
         toNavigate("/cidimec/gpa-imt/");
@@ -40,7 +40,7 @@ export function GpaPage() {
         <Container>
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav>
-              <Nav.Link href="/cidimec/gpa-imt">Inicio</Nav.Link>
+              <Nav.Link href="/cidimec/gpa-imt/">Inicio</Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Container>

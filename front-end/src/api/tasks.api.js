@@ -57,3 +57,13 @@ export const updateActivity = (id, data) => {
     },
   });
 };
+
+export const postStudents = (data) => {
+  const token = getAccessToken();
+  return userApi.post("gestion/estudiantes/", data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Authorization: `Token ${token}`,
+    },
+  });
+};

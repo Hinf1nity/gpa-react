@@ -91,28 +91,22 @@ class GestionView(viewsets.ViewSet):
         archivo_temporal = default_storage.save(
             'temp_archivo.xlsx', ContentFile(archivo.read()))
         path = default_storage.path(archivo_temporal)
-        valor_a_buscar = 'Nombre'
+        valor_a_buscar = 'PUNTOS'
 
         fila_encontrada, _ = self.encontrar_valor(
             'media/'+archivo_temporal, valor_a_buscar)
         df = pd.read_excel(
-            path, names=['Carnet', 'Nombre', 'Apellido', 'Puntos'], index_col=None)
+            path, names=['CI', 'PUNTOS'], index_col=None)
         df = df.iloc[fila_encontrada - 1:]
         df = df.reset_index(drop=True)
         for i in range(len(df.axes[0])):
-            print(df.iloc[i]['Nombre'])
-            print(df.iloc[i]['Apellido'])
-            if estudiante.objects.filter(ci=df.iloc[i]['Carnet']).exists() == False:
-                estudiante.objects.create(
-                    nombre=df.iloc[i]['Nombre'],
-                    apellido=df.iloc[i]['Apellido'],
-                    ci=df.iloc[i]['Carnet'],
-                )
+            print(df.iloc[i]['CI'])
+            print(df.iloc[i]['PUNTOS'])
             puntos.objects.create(
                 actividad=actividad,
                 fecha=fecha,
-                puntos_gpa=df.iloc[i]['Puntos'],
+                puntos_gpa=df.iloc[i]['PUNTOS'],
                 estudiante=estudiante.objects.get(
-                    ci=df.iloc[i]['Carnet'])
+                    ci=df.iloc[i]['CI'])
             )
         default_storage.delete(path)
