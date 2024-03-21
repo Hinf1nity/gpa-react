@@ -1,5 +1,10 @@
 import { useForm } from "react-hook-form";
-import { postActivity, getActivities, updateActivity } from "../api/tasks.api";
+import {
+  postActivity,
+  getActivities,
+  updateActivity,
+  postStudents,
+} from "../api/tasks.api";
 import { HeaderPage } from "../components/HeaderPage";
 import { AddPoints } from "../components/AddPoints";
 import { UseAuth } from "../context/UseAuth";
@@ -13,6 +18,7 @@ import {
   Col,
   Nav,
   Navbar,
+  Modal,
 } from "react-bootstrap";
 import { useEffect, useState } from "react";
 
@@ -21,6 +27,7 @@ export function GestionPage() {
   const [actividades, setActividades] = useState([]);
   const [showInput, setShowInput] = useState(false);
   const [showInputUpdate, setShowInputUpdate] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const {
     register: registerUpdate,
@@ -28,6 +35,13 @@ export function GestionPage() {
     control: controlUpdate,
     //formState: { errors },
     reset: resetUpdate,
+  } = useForm();
+
+  const {
+    register: registerFile,
+    handleSubmit: handleSubmitFile,
+    //formState: { errors },
+    reset: resetFile,
   } = useForm();
 
   const {
@@ -83,6 +97,17 @@ export function GestionPage() {
     }
   };
 
+  const onSubmitFile = async (data) => {
+    try {
+      await postStudents(data);
+      toast.success("Estudiantes añadidos");
+      resetFile();
+    } catch (error) {
+      console.log("Error al añadir estudiantes");
+      console.error(error.message);
+    }
+  };
+
   const handleLogoutClick = async () => {
     try {
       logout();
@@ -99,6 +124,14 @@ export function GestionPage() {
     setShowInputUpdate(value === "Finalizada");
   };
 
+  const handleShowModal = () => {
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
   return (
     <div>
       <HeaderPage
@@ -112,6 +145,9 @@ export function GestionPage() {
             id="basic-navbar-nav"
             className="justify-content-end"
           >
+            <Nav className="me-auto">
+              <Nav onClick={handleShowModal}>Añadir estudiantes</Nav>
+            </Nav>
             <Nav>
               <Nav onClick={handleLogoutClick}>Cerrar Sesión</Nav>
             </Nav>
@@ -262,6 +298,27 @@ export function GestionPage() {
       ) : (
         <div></div>
       )}
+
+      <Modal show={showModal} onHide={handleCloseModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Añadir estudiantes</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={handleSubmitFile(onSubmitFile)}>
+            <Form.Group controlId="Archivo" className="mb-3">
+              <Form.Label>Ingrese un archivo excel:</Form.Label>
+              <Form.Control
+                size="lg"
+                type="file"
+                {...registerFile("archivo", { required: true })}
+              />
+            </Form.Group>
+            <Button variant="primary" type="submit">
+              Añadir
+            </Button>
+          </Form>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 }

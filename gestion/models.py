@@ -5,12 +5,11 @@ from django.db import models
 
 class estudiante(models.Model):
     nombre = models.CharField(max_length=50)
-    apellido = models.CharField(max_length=50, default="")
     email = models.EmailField(max_length=50, default="")
-    ci = models.IntegerField(unique=True, null=True, blank=True)
+    ci = models.CharField(unique=True, null=True, blank=True, max_length=20)
 
     def __str__(self):
-        return self.nombre + " " + self.apellido
+        return self.nombre
 
 
 class puntos(models.Model):
