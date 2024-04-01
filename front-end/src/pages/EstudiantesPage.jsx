@@ -47,7 +47,7 @@ export function EstudiantesPage() {
       } else {
         const carnet = data.carnet;
         console.log(carnet);
-        toNavigate(`/${carnet}`);
+        toNavigate(`/cidimec/gpa-imt/${carnet}`);
       }
     } catch (error) {
       toast.error(error.message);
@@ -58,9 +58,7 @@ export function EstudiantesPage() {
     console.log(carnet);
     getUser(carnet)
       .then((response) => {
-        setNombreCompleto(
-          response.data[0].nombre + " " + response.data[0].apellido
-        );
+        setNombreCompleto(response.data[0].nombre);
         console.log(nombre_completo);
       })
       .catch((error) => {
@@ -83,7 +81,7 @@ export function EstudiantesPage() {
             className="justify-content-end"
           >
             <Nav>
-              <Nav.Link href="/login">Iniciar Sesión</Nav.Link>
+              <Nav.Link href="/cidimec/gpa-imt/login">Iniciar Sesión</Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Container>

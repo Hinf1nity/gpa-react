@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const userApi = axios.create({
+  //baseURL: "https://www.imt.ucb.edu.bo/cidimec/gpa/",
   baseURL: "http://localhost:8000/",
 });
 
@@ -50,6 +51,16 @@ export const postActivity = (data) => {
 export const updateActivity = (id, data) => {
   const token = getAccessToken();
   return userApi.put(`gestion/actividades/${id}/`, data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Authorization: `Token ${token}`,
+    },
+  });
+};
+
+export const postStudents = (data) => {
+  const token = getAccessToken();
+  return userApi.post("gestion/estudiantes/", data, {
     headers: {
       "Content-Type": "multipart/form-data",
       Authorization: `Token ${token}`,

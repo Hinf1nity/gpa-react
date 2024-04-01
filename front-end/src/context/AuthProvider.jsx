@@ -20,7 +20,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-    removeCookie("csrftoken");
+    removeCookie("csrftoken", { path: "/cidimec/gpa-imt/" });
     setIsLoggedIn(false);
   };
 
