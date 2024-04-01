@@ -25,5 +25,5 @@ class UserAuth(viewsets.ViewSet):
             return Response({'error': 'Credenciales inválidas'}, status=status.HTTP_401_UNAUTHORIZED)
 
         token, created = Token.objects.get_or_create(user=user)
-        print(token.key)
+        # print(token.key)
         return Response({'token': token.key})

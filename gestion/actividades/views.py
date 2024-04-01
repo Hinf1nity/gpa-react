@@ -18,11 +18,12 @@ class GestionView(viewsets.ViewSet):
     permission_classes = [IsAuthenticated]
 
     def create(self, request):
-        print(request.data)
+        # print(request.data)
+        self.puntos_totales = abs(int(request.data.get('puntos_gpa')))
         actividades.objects.create(
             actividades=request.data.get('actividad'),
             fecha=request.data.get('fecha'),
-            puntos_ac=request.data.get('puntos_gpa'),
+            puntos_ac=self.puntos_totales,
             estado=request.data.get('estado')
         )
         if request.data.get('estado') == 'Finalizada':
@@ -30,50 +31,72 @@ class GestionView(viewsets.ViewSet):
             fecha = request.data.get('fecha')
             if request.FILES.get('archivo[]') == None:
                 carnets_puntos = []
+                self.carnets_not_found = []
                 for key in request.data.keys():
                     if carnets_puntos != []:
-                        puntos.objects.create(
-                            actividad=actividad,
-                            fecha=fecha,
-                            puntos_gpa=request.data.get(key),
-                            estudiante=estudiante.objects.get(
-                                ci=carnets_puntos[0])
-                        )
+                        try:
+                            puntos_estudiante = abs(int(request.data.get(key)))
+                            if puntos_estudiante > self.puntos_totales:
+                                puntos_estudiante = self.puntos_totales
+                            puntos.objects.create(
+                                actividad=actividad,
+                                fecha=fecha,
+                                puntos_gpa=puntos_estudiante,
+                                estudiante=estudiante.objects.get(
+                                    ci=carnets_puntos[0])
+                            )
+                        except:
+                            self.carnets_not_found.append(carnets_puntos[0])
                         carnets_puntos = []
                     elif 'carnets' in key:
-                        print(request.data.get(key))
+                        # print(request.data.get(key))
                         carnets_puntos.append(request.data.get(key))
             else:
                 archivo = request.FILES.get('archivo[]')
                 self.guardar_archivo(archivo, actividad, fecha)
+            if self.carnets_not_found != []:
+                response = {'message': 'Carnets not found',
+                            'carnets': self.carnets_not_found}
+                return Response(response, status=status.HTTP_400_BAD_REQUEST)
         response = {'message': 'Created successfully'}
         return Response(response, status=status.HTTP_201_CREATED)
 
     def update(self, request, *args, **kwargs):
-        print(request.data)
+        # print(request.data)
         actividades.objects.filter(
             actividades=request.data.get('actividad')).update(estado=request.data.get('estado'))
         if request.data.get('estado') == 'Finalizada':
             actividad = request.data.get('actividad')
             fecha = actividades.objects.get(actividades=actividad).fecha
+            self.carnets_not_found = []
             if request.FILES.get('archivo[]') == None:
                 carnets_puntos = []
                 for key in request.data.keys():
                     if carnets_puntos != []:
-                        puntos.objects.create(
-                            actividad=actividad,
-                            fecha=fecha,
-                            puntos_gpa=request.data.get(key),
-                            estudiante=estudiante.objects.get(
-                                ci=carnets_puntos[0])
-                        )
+                        try:
+                            puntos_estudiante = abs(int(request.data.get(key)))
+                            if puntos_estudiante > self.puntos_totales:
+                                puntos_estudiante = self.puntos_totales
+                            puntos.objects.create(
+                                actividad=actividad,
+                                fecha=fecha,
+                                puntos_gpa=puntos_estudiante,
+                                estudiante=estudiante.objects.get(
+                                    ci=carnets_puntos[0])
+                            )
+                        except:
+                            self.carnets_not_found.append(carnets_puntos[0])
                         carnets_puntos = []
                     elif 'carnets' in key:
-                        print(request.data.get(key))
+                        # print(request.data.get(key))
                         carnets_puntos.append(request.data.get(key))
             else:
                 archivo = request.FILES.get('archivo[]')
                 self.guardar_archivo(archivo, actividad, fecha)
+            if self.carnets_not_found != []:
+                response = {'message': 'Carnets not found',
+                            'carnets': self.carnets_not_found}
+                return Response(response, status=status.HTTP_400_BAD_REQUEST)
         response = {'message': 'Updated successfully'}
         return Response(response, status=status.HTTP_200_OK)
 
@@ -99,14 +122,21 @@ class GestionView(viewsets.ViewSet):
             path, names=['CI', 'PUNTOS'], index_col=None)
         df = df.iloc[fila_encontrada - 1:]
         df = df.reset_index(drop=True)
+        self.carnets_not_found = []
         for i in range(len(df.axes[0])):
-            print(df.iloc[i]['CI'])
-            print(df.iloc[i]['PUNTOS'])
-            puntos.objects.create(
-                actividad=actividad,
-                fecha=fecha,
-                puntos_gpa=df.iloc[i]['PUNTOS'],
-                estudiante=estudiante.objects.get(
-                    ci=df.iloc[i]['CI'])
-            )
+            # print(df.iloc[i]['CI'])
+            # print(df.iloc[i]['PUNTOS'])
+            try:
+                puntos_estudiante = abs(int(df.iloc[i]['PUNTOS']))
+                if puntos_estudiante > self.puntos_totales:
+                    puntos_estudiante = self.puntos_totales
+                puntos.objects.create(
+                    actividad=actividad,
+                    fecha=fecha,
+                    puntos_gpa=puntos_estudiante,
+                    estudiante=estudiante.objects.get(
+                        ci=df.iloc[i]['CI'])
+                )
+            except:
+                self.carnets_not_found.append(df.iloc[i]['CI'])
         default_storage.delete(path)
