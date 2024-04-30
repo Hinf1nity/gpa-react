@@ -1,17 +1,33 @@
 import { useParams } from "react-router-dom";
-import { getUserGpa, getUser } from "../api/tasks.api";
+import { getUserGpa, getUser, updateUserMail } from "../api/tasks.api";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { GpaCard } from "../components/GpaCard";
 import { HeaderPage } from "../components/HeaderPage";
-import { Container, Row, Col, Navbar, Nav, Tab, Tabs } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Navbar,
+  Nav,
+  Tab,
+  Tabs,
+  Button,
+  Modal,
+  Form,
+} from "react-bootstrap";
+import { useForm } from "react-hook-form";
 
 export function GpaPage() {
   const { carnet } = useParams();
   const [puntos, setPuntos] = useState([]);
   const [nombreEstudiante, setNombreEstudiante] = useState("");
+  const [mailEstudiante, setMailEstudiante] = useState("");
+  const [showModal, setShowModal] = useState(false);
   const toNavigate = useNavigate();
+
+  const { register: registerMail, handleSubmit: handleSubmitMail } = useForm();
 
   useEffect(() => {
     async function fetchStudent() {
@@ -20,6 +36,7 @@ export function GpaPage() {
         setPuntos(response.data);
         const res = await getUser(carnet);
         setNombreEstudiante(res.data[0].nombre);
+        setMailEstudiante(res.data[0].email);
       } catch (error) {
         toast.error("Estudiante no encontrado");
         toNavigate("/cidimec/gpa-imt/");
@@ -28,6 +45,27 @@ export function GpaPage() {
     }
     fetchStudent();
   }, [carnet, toNavigate]);
+
+  const checkMail = () => {
+    if (mailEstudiante === "") {
+      setShowModal(true);
+    } else {
+      toNavigate(`/cidimec/gpa-imt/registrar_licencia/${carnet}`);
+    }
+  };
+
+  const onSubmitMail = async (data) => {
+    console.log(data);
+    try {
+      await updateUserMail(carnet, data);
+      setShowModal(false);
+      toNavigate(`/cidimec/gpa-imt/registrar_licencia/${carnet}`);
+    } catch (error) {
+      console.log("Error al actualizar el correo");
+    }
+  };
+
+  const handleCloseModal = () => setShowModal(false);
 
   return (
     <div>
@@ -56,12 +94,46 @@ export function GpaPage() {
             </Tab>
             <Tab eventKey="licencias" title="Licencias">
               <br />
-              <h2 className="ml-4">Consulta de licencias</h2>
+              <Row>
+                <Col>
+                  <h2 className="ml-4">Consulta de licencias</h2>
+                </Col>
+                <Col md={{ span: 2, offset: 2 }}>
+                  <Button
+                    variant="primary"
+                    className="justify-content-end"
+                    onClick={checkMail}
+                  >
+                    Registrar nueva licencia
+                  </Button>
+                </Col>
+              </Row>
               <p>Consulta de licencias</p>
             </Tab>
           </Tabs>
         </Row>
       </Container>
+      <Modal show={showModal} onHide={handleCloseModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Añadir estudiantes</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={handleSubmitMail(onSubmitMail)}>
+            <Form.Group controlId="mail" className="mb-3">
+              <Form.Label>Ingrese su correo institucional:</Form.Label>
+              <Form.Control
+                type="email"
+                size="lg"
+                placeholder="example@ucb.edu.bo"
+                {...registerMail("mail", { required: true })}
+              />
+            </Form.Group>
+            <Button variant="primary" type="submit">
+              Añadir
+            </Button>
+          </Form>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 }

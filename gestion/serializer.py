@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework.fields import FileField
 from .models import estudiante, puntos, actividades
 
 
@@ -18,3 +19,14 @@ class ActividadesSerializer(serializers.ModelSerializer):
     class Meta:
         model = actividades
         fields = '__all__'
+
+
+class PermisoSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    materia = serializers.ListField(child=serializers.DictField())
+    justificacion = FileField()
+    descripcion = serializers.CharField()
+    fechaSolicitud = serializers.DateField()
+    estado = serializers.CharField()
+    motivo = serializers.CharField()
+    estudiante = serializers.CharField()

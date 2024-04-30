@@ -31,9 +31,7 @@ export function AddPoints({ register, control }) {
     console.log(carnet);
     getUser(carnet)
       .then((response) => {
-        setNombreCompleto(
-          response.data[0].nombre + " " + response.data[0].apellido
-        );
+        setNombreCompleto(response.data[0].nombre);
         console.log(nombre_completo);
       })
       .catch((error) => {

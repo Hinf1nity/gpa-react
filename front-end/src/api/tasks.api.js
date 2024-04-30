@@ -37,6 +37,9 @@ export const getUserGpa = (ci) => userApi.get(`users/puntos/${ci}/`);
 
 export const getUser = (ci) => userApi.get(`users/estudiante/${ci}/`);
 
+export const updateUserMail = (ci, data) =>
+  userApi.put(`users/estudiante/${ci}/`, data);
+
 export const postActivity = (data) => {
   const token = getAccessToken();
   console.log(token);
@@ -67,3 +70,12 @@ export const postStudents = (data) => {
     },
   });
 };
+
+// Licencias
+export const getMaterias = () => userApi.get("licencias/materias/");
+export const postLicencia = (data) =>
+  userApi.post("licencias/create_licencias/", data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });

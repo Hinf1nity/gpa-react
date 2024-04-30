@@ -6,20 +6,11 @@ import {
   postStudents,
 } from "../api/tasks.api";
 import { HeaderPage } from "../components/HeaderPage";
-import { AddPoints } from "../components/AddPoints";
 import { UseAuth } from "../context/UseAuth";
+import { ActivitiesCreation } from "../components/ActivitiesCreation";
+import { ActivitiesUpdate } from "../components/ActivitiesUpdate";
 import toast from "react-hot-toast";
-import {
-  InputGroup,
-  Button,
-  Form,
-  Container,
-  Row,
-  Col,
-  Nav,
-  Navbar,
-  Modal,
-} from "react-bootstrap";
+import { Button, Form, Container, Nav, Navbar, Modal } from "react-bootstrap";
 import { useEffect, useState } from "react";
 
 export function GestionPage() {
@@ -154,86 +145,19 @@ export function GestionPage() {
           </Navbar.Collapse>
         </Container>
       </Navbar>
-      <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
-        <Container>
-          <h1>Bienvenido Ing. Fabio R. Diaz Palacios</h1>
-          <h2>Asignar GPA</h2>
-          <Row>
-            <Col md="7">
-              <InputGroup className="mb-3" size="lg">
-                <InputGroup.Text id="Actividad">Actividad:</InputGroup.Text>
-                <Form.Control
-                  type="text"
-                  aria-describedby="Actividad"
-                  {...register("actividad", { required: true })}
-                />
-              </InputGroup>
-            </Col>
-            <Col>
-              <InputGroup className="mb-3" size="lg">
-                <InputGroup.Text id="PuntosGpa">Puntos GPA:</InputGroup.Text>
-                <Form.Control
-                  type="number"
-                  aria-describedby="PuntosGpa"
-                  {...register("puntos_gpa", { required: true })}
-                />
-              </InputGroup>
-            </Col>
-            <Col md="2"></Col>
-          </Row>
-          <InputGroup className="mb-3" size="lg">
-            <InputGroup.Text id="Fecha">Fecha:</InputGroup.Text>
-            <Form.Control
-              type="date"
-              aria-describedby="Fecha"
-              {...register("fecha", { required: true })}
-            />
-          </InputGroup>
-          <Row className="justify-content-center">
-            <Col md="2"></Col>
-            <Col md="4">
-              <h5 className="d-inline mr-4">Estado de la actividad:</h5>
-            </Col>
-            <Col>
-              <Form.Check
-                type="radio"
-                label="En proceso"
-                name="estado"
-                value="En proceso"
-                inline
-                style={{ marginRight: "60px" }}
-                {...register("estado")}
-                onChange={(e) => handleShowInput(e.target.value)}
-              />
-              <Form.Check
-                type="radio"
-                label="Finalizada"
-                name="estado"
-                value="Finalizada"
-                inline
-                style={{ marginRight: "60px" }}
-                {...register("estado")}
-                onChange={(e) => handleShowInput(e.target.value)}
-              />
-              <Form.Check
-                type="radio"
-                label="Proximamente"
-                name="estado"
-                value="Proximamente"
-                inline
-                style={{ marginRight: "60px" }}
-                {...register("estado")}
-                onChange={(e) => handleShowInput(e.target.value)}
-                defaultChecked
-              />
-            </Col>
-          </Row>
-          {showInput && <AddPoints register={register} control={control} />}
-          <Button variant="primary" type="submit" size="lg">
-            Guardar
-          </Button>
-        </Container>
-      </form>
+      <Container>
+        <h1>Bienvenido Ing. Fabio R. Diaz Palacios</h1>
+        <h2>Asignar GPA</h2>
+        <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
+          <ActivitiesCreation
+            register={register}
+            control={control}
+            showInput={showInput}
+            handleShowInput={handleShowInput}
+          />
+        </form>
+      </Container>
+
       {actividades.length > 0 ? (
         <div>
           <hr />
@@ -243,55 +167,13 @@ export function GestionPage() {
           >
             <Container>
               <h2>Edicion de eventos</h2>
-              <Form.Select
-                aria-label="Default select example mb-3"
-                size="lg"
-                {...registerUpdate("actividad")}
-              >
-                <option>Seleccione una actividad</option>
-                {actividades.map((actividad) => (
-                  <option key={actividad.id} value={actividad.actividades}>
-                    {actividad.actividades} - {actividad.estado}
-                  </option>
-                ))}
-              </Form.Select>
-              <Row className="justify-content-center">
-                <Col md="2"></Col>
-                <Col md="4">
-                  <h5 className="d-inline mr-4">Estado de la actividad:</h5>
-                </Col>
-                <Col>
-                  <Form.Check
-                    type="radio"
-                    label="Finalizada"
-                    name="estado"
-                    value="Finalizada"
-                    inline
-                    style={{ marginRight: "60px" }}
-                    {...registerUpdate("estado")}
-                    onChange={(e) => handleShowInputUpdate(e.target.value)}
-                  />
-                  <Form.Check
-                    type="radio"
-                    label="Proximamente"
-                    name="estado"
-                    value="Proximamente"
-                    inline
-                    defaultChecked
-                    style={{ marginRight: "60px" }}
-                    {...registerUpdate("estado")}
-                    onChange={(e) => handleShowInputUpdate(e.target.value)}
-                  />
-                </Col>
-              </Row>
-              {showInputUpdate ? (
-                <AddPoints register={registerUpdate} control={controlUpdate} />
-              ) : (
-                <div></div>
-              )}
-              <Button variant="primary" type="submit" size="lg">
-                Guardar
-              </Button>
+              <ActivitiesUpdate
+                registerUpdate={registerUpdate}
+                controlUpdate={controlUpdate}
+                handleShowInputUpdate={handleShowInputUpdate}
+                showInputUpdate={showInputUpdate}
+                actividades={actividades}
+              />
             </Container>
           </form>
         </div>
