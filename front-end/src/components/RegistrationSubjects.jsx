@@ -10,6 +10,12 @@ export const RegistrationSubjects = ({ register, control }) => {
     name: "materia",
   });
   const [materias, setMaterias] = useState([]);
+  const [minDate] = useState(() => {
+    const today = new Date();
+    const minDate = new Date(today);
+    minDate.setDate(minDate.getDate() - 20);
+    return minDate.toISOString().split("T")[0];
+  });
 
   useEffect(() => {
     async function fetchMaterias() {
@@ -30,15 +36,16 @@ export const RegistrationSubjects = ({ register, control }) => {
         <thead>
           <tr>
             <th>#</th>
-            <th>Materia</th>
-            <th>Fecha</th>
+            <th className="d-none d-md-table-cell">Materia</th>
+            <th className="d-none d-md-table-cell">Fecha</th>
+            <th className="d-table-cell d-md-none">Materia y Fecha</th>
           </tr>
         </thead>
         <tbody>
           {fields.map((field, index) => (
             <tr key={field.id}>
               <td>{index + 1}</td>
-              <td>
+              <td className="d-none d-md-table-cell">
                 <Form.Select
                   aria-label="Subjects select"
                   {...register(`materia[${index}].materia`)}
@@ -58,10 +65,38 @@ export const RegistrationSubjects = ({ register, control }) => {
                   )}
                 </Form.Select>
               </td>
-              <td>
+              <td className="d-none d-md-table-cell">
                 <Form.Group controlId={`fecha[${index}]`}>
                   <Form.Control
                     type="date"
+                    min={minDate}
+                    {...register(`materia[${index}].fecha`)}
+                  />
+                </Form.Group>
+              </td>
+              <td className="d-table-cell d-md-none">
+                <Form.Select
+                  aria-label="Subjects select"
+                  {...register(`materia[${index}].materia`)}
+                >
+                  <option>Seleccione una materia</option>
+                  {materias.map((materia) =>
+                    Array.from({ length: materia.paralelo }).map(
+                      (_, paraleloIndex) => (
+                        <option
+                          value={`${materia.materia}-${paraleloIndex + 1}`}
+                          key={`${materia.id}-${paraleloIndex}`}
+                        >
+                          {materia.materia} - Paralelo {paraleloIndex + 1}
+                        </option>
+                      )
+                    )
+                  )}
+                </Form.Select>
+                <Form.Group controlId={`fecha[${index}]`}>
+                  <Form.Control
+                    type="date"
+                    min={minDate}
                     {...register(`materia[${index}].fecha`)}
                   />
                 </Form.Group>

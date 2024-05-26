@@ -42,7 +42,6 @@ export const updateUserMail = (ci, data) =>
 
 export const postActivity = (data) => {
   const token = getAccessToken();
-  console.log(token);
   return userApi.post("gestion/actividades/", data, {
     headers: {
       "Content-Type": "multipart/form-data",
@@ -73,9 +72,39 @@ export const postStudents = (data) => {
 
 // Licencias
 export const getMaterias = () => userApi.get("licencias/materias/");
+export const getLicenciasEstudiante = (ci) =>
+  userApi.get(`licencias/create_licencias/${ci}/`);
 export const postLicencia = (data) =>
   userApi.post("licencias/create_licencias/", data, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
   });
+
+export const getLicencias = () => {
+  const token = getAccessToken();
+  return userApi.get("gestion/licencias/", {
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Authorization: `Token ${token}`,
+    },
+  });
+};
+
+export const updateLicencia = (id, data) => {
+  const token = getAccessToken();
+  return userApi.put(`gestion/licencias/${id}/`, data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Authorization: `Token ${token}`,
+    },
+  });
+};
+
+export const updateLicenciaEstudiante = (id, data) => {
+  return userApi.put(`licencias/create_licencias/${id}/`, data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};

@@ -26,14 +26,19 @@ export function RegistrarLicencia() {
     handleSubmit,
     control,
     //formState: { errors },
+    reset,
   } = useForm();
 
   const onSubmit = handleSubmit(async (data) => {
     try {
+      if (data.justificacion[0].type !== "application/pdf") {
+        toast.error("El archivo debe ser en formato PDF");
+        return;
+      }
       const formData = { ...data, ...additionalData };
-      console.log(formData);
       await postLicencia(formData);
       toast.success("Licencia registrada con éxito");
+      reset();
     } catch (error) {
       console.error(error);
       toast.error("Error al registrar la licencia");
@@ -129,6 +134,7 @@ export function RegistrarLicencia() {
                 <Form.Label>Ingrese justificante en formato PDF:</Form.Label>
                 <Form.Control
                   type="file"
+                  accept="application/pdf"
                   {...register("justificacion", { required: true })}
                 />
               </Form.Group>

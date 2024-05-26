@@ -1,5 +1,5 @@
 from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAdminUser
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.response import Response
 from rest_framework import status
@@ -15,7 +15,7 @@ class EstudiantesView(viewsets.ViewSet):
     queryset = estudiante.objects.all()
     serializer_class = GestionSerializer
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAdminUser]
 
     def create(self, request):
         print(request.data)
@@ -45,7 +45,7 @@ class EstudiantesView(viewsets.ViewSet):
         valor_a_buscar = 'ESTUDIANTE'
 
         fila_encontrada, _ = self.encontrar_valor(
-            'media/'+archivo_temporal, valor_a_buscar)
+            'front-end/media/'+archivo_temporal, valor_a_buscar)
         df = pd.read_excel(
             path, names=['CI', 'ESTUDIANTE'], index_col=None)
         df = df.iloc[fila_encontrada - 1:]

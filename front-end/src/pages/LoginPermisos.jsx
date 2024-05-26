@@ -15,7 +15,7 @@ import {
   Navbar,
 } from "react-bootstrap";
 
-export const Login = () => {
+export const LoginPermisos = () => {
   const {
     register,
     handleSubmit,
@@ -50,7 +50,7 @@ export const Login = () => {
     <div>
       <HeaderPage
         header1="Gestión de Puntos GPA"
-        paragraph="Bienvenido al Panel para la Gestión de Puntos GPA"
+        paragraph="Bienvenido al Panel de docentes para la consulta de permisos"
       />
       <Navbar bg="light" variant="light" expand="lg">
         <Navbar.Toggle aria-controls="basic-navbar-nav" />

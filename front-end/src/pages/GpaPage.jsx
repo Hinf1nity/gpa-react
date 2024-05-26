@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { GpaCard } from "../components/GpaCard";
+import { LicenciaEstudianteCard } from "../components/LicenciaEstudianteCard";
 import { HeaderPage } from "../components/HeaderPage";
 import {
   Container,
@@ -40,7 +41,6 @@ export function GpaPage() {
       } catch (error) {
         toast.error("Estudiante no encontrado");
         toNavigate("/cidimec/gpa-imt/");
-        console.log("Error al obtener el estudiante");
       }
     }
     fetchStudent();
@@ -55,7 +55,6 @@ export function GpaPage() {
   };
 
   const onSubmitMail = async (data) => {
-    console.log(data);
     try {
       await updateUserMail(carnet, data);
       setShowModal(false);
@@ -108,7 +107,8 @@ export function GpaPage() {
                   </Button>
                 </Col>
               </Row>
-              <p>Consulta de licencias</p>
+              <br className="d-md-none" />
+              <LicenciaEstudianteCard carnet={carnet} />
             </Tab>
           </Tabs>
         </Row>
