@@ -28,13 +28,9 @@ export function AddPoints({ register, control }) {
   }, [append, fields]);
 
   const handleInputChange = (carnet) => {
-    console.log(carnet);
     getUser(carnet)
       .then((response) => {
-        setNombreCompleto(
-          response.data[0].nombre + " " + response.data[0].apellido
-        );
-        console.log(nombre_completo);
+        setNombreCompleto(response.data[0].nombre);
       })
       .catch((error) => {
         setNombreCompleto("");

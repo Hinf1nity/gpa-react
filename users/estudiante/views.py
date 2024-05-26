@@ -23,6 +23,16 @@ class StudentDataView(viewsets.ReadOnlyModelViewSet):
         serializer = self.get_serializer(id_estudiante, many=True)
         return Response(serializer.data)
 
+    def update(self, request, *args, **kwargs):
+        ci_user = kwargs.get('pk')
+        mail_estudiante = estudiante.objects.filter(
+            ci=ci_user).values('email')[0]['email']
+        if mail_estudiante == "":
+            mail_user = request.data.get('mail')
+            estudiante.objects.filter(ci=ci_user).update(email=mail_user)
+            return Response({"detail": "Correo actualizado"}, status=200)
+        return Response({"detail": "Correo no actualizado"}, status=400)
+
     # @action(detail=False, methods=['post'], permission_classes=[IsAuthenticated])
     # def create_students(self, request):
     #     archivo = request.FILES.get('archivo[]')

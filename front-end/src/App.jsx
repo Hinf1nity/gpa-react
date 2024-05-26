@@ -6,6 +6,7 @@ import { GestionPage } from "./pages/GestionPage";
 import { Login } from "./pages/Login";
 import { EstudiantesPage } from "./pages/EstudiantesPage";
 import { GpaPage } from "./pages/GpaPage";
+import { RegistrarLicencia } from "./pages/RegistrarLicencia";
 import { AuthProvider } from "./context/AuthProvider";
 import { UseAuth } from "./context/UseAuth";
 
@@ -45,6 +46,10 @@ function AppRoutes() {
             <Navigate to="/cidimec/gpa-imt/login/" />
           )
         }
+      />
+      <Route
+        path="/cidimec/gpa-imt/registrar_licencia/:carnet"
+        element={<RegistrarLicencia />}
       />
     </Routes>
   );
