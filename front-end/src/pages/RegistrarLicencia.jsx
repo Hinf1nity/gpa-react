@@ -25,6 +25,7 @@ export function RegistrarLicencia() {
     register,
     handleSubmit,
     control,
+    setValue,
     //formState: { errors },
     reset,
   } = useForm();
@@ -36,6 +37,7 @@ export function RegistrarLicencia() {
         return;
       }
       const formData = { ...data, ...additionalData };
+      console.log(formData);
       await postLicencia(formData);
       toast.success("Licencia registrada con éxito");
       reset();
@@ -141,7 +143,11 @@ export function RegistrarLicencia() {
             </Col>
           </Row>
           <h2>Registro de materias:</h2>
-          <RegistrationSubjects register={register} control={control} />
+          <RegistrationSubjects
+            register={register}
+            control={control}
+            setValue={setValue}
+          />
           <button type="submit" className="btn btn-primary mt-3">
             Registrar
           </button>

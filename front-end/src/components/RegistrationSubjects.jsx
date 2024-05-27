@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useFieldArray } from "react-hook-form";
 import { getMaterias } from "../api/tasks.api";
 
-export const RegistrationSubjects = ({ register, control }) => {
+export const RegistrationSubjects = ({ register, control, setValue }) => {
   const { fields, append, remove } = useFieldArray({
     control,
     name: "materia",
@@ -22,13 +22,16 @@ export const RegistrationSubjects = ({ register, control }) => {
       try {
         const response = await getMaterias();
         setMaterias(response.data);
-        append({ materia: "", fecha: "" });
+        // Agrega un campo por defecto solo si el array está vacío
+        if (fields.length === 0) {
+          append({ materia: "", fecha: "" });
+        }
       } catch (error) {
-        console.error("Error al obtener las materias");
+        console.error("Error al obtener las materias", error);
       }
     }
     fetchMaterias();
-  }, [append]);
+  }, [append, fields.length]);
 
   return (
     <div>
@@ -48,9 +51,12 @@ export const RegistrationSubjects = ({ register, control }) => {
               <td className="d-none d-md-table-cell">
                 <Form.Select
                   aria-label="Subjects select"
-                  {...register(`materia[${index}].materia`)}
+                  {...register(`materia.${index}.materia`, { required: true })}
+                  onChange={(e) =>
+                    setValue(`materia.${index}.materia`, e.target.value)
+                  }
                 >
-                  <option>Seleccione una materia</option>
+                  <option value="">Seleccione una materia</option>
                   {materias.map((materia) =>
                     Array.from({ length: materia.paralelo }).map(
                       (_, paraleloIndex) => (
@@ -70,16 +76,22 @@ export const RegistrationSubjects = ({ register, control }) => {
                   <Form.Control
                     type="date"
                     min={minDate}
-                    {...register(`materia[${index}].fecha`)}
+                    {...register(`materia.${index}.fecha`, { required: true })}
+                    onChange={(e) =>
+                      setValue(`materia.${index}.fecha`, e.target.value)
+                    }
                   />
                 </Form.Group>
               </td>
               <td className="d-table-cell d-md-none">
                 <Form.Select
                   aria-label="Subjects select"
-                  {...register(`materia[${index}].materia`)}
+                  {...register(`materia.${index}.materia`, { required: true })}
+                  onChange={(e) =>
+                    setValue(`materia.${index}.materia`, e.target.value)
+                  }
                 >
-                  <option>Seleccione una materia</option>
+                  <option value="">Seleccione una materia</option>
                   {materias.map((materia) =>
                     Array.from({ length: materia.paralelo }).map(
                       (_, paraleloIndex) => (
@@ -97,7 +109,10 @@ export const RegistrationSubjects = ({ register, control }) => {
                   <Form.Control
                     type="date"
                     min={minDate}
-                    {...register(`materia[${index}].fecha`)}
+                    {...register(`materia.${index}.fecha`, { required: true })}
+                    onChange={(e) =>
+                      setValue(`materia.${index}.fecha`, e.target.value)
+                    }
                   />
                 </Form.Group>
               </td>
@@ -126,4 +141,5 @@ export const RegistrationSubjects = ({ register, control }) => {
 RegistrationSubjects.propTypes = {
   register: PropTypes.func.isRequired,
   control: PropTypes.object.isRequired,
+  setValue: PropTypes.func.isRequired,
 };
