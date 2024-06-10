@@ -56,7 +56,8 @@ class permisos(models.Model):
         max_length=10, choices=STATUS_CHOICES, default='Pendiente')
     project = models.ForeignKey(estudiante, on_delete=models.CASCADE)
     motivo = models.CharField(max_length=30, choices=CHOICES, default='Otro')
-    observaciones = models.TextField(null=True, blank=True)
+    observaciones = models.TextField(
+        null=True, blank=True, default='En revisión.')
     id_solicitud = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
