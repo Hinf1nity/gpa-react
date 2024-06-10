@@ -25,7 +25,6 @@ export function LicenciaEstudianteCard({ carnet }) {
       ))}
     </Tooltip>
   );
-
   useEffect(() => {
     const fetchLicencias = async () => {
       try {
@@ -37,13 +36,11 @@ export function LicenciaEstudianteCard({ carnet }) {
             [element.id]: false,
           }));
         });
-        console.log(response.data);
       } catch (error) {
         console.error(error);
       }
     };
     fetchLicencias();
-    console.log(animationApelar);
   }, [carnet]);
 
   return (

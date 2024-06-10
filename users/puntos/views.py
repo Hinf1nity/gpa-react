@@ -8,11 +8,9 @@ from gestion.serializer import PuntosSerializer
 class PuntosDataView(viewsets.ReadOnlyModelViewSet):
     queryset = puntos.objects.all()
     serializer_class = PuntosSerializer
-    authentication_classes = []  # No requiere autenticación
-    permission_classes = [AllowAny]  # Permite cualquier acceso
 
-    def retrieve(self, request, *args, **kwargs):
-        ci_user = kwargs.get('pk')
+    def retrieve(self, request, pk=None):
+        ci_user = pk
         if ci_user == "0":
             return Response({"detail": "Estudiante no registrado"}, status=404)
         else:
