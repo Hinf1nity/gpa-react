@@ -28,11 +28,9 @@ export function AddPoints({ register, control }) {
   }, [append, fields]);
 
   const handleInputChange = (carnet) => {
-    console.log(carnet);
     getUser(carnet)
       .then((response) => {
         setNombreCompleto(response.data[0].nombre);
-        console.log(nombre_completo);
       })
       .catch((error) => {
         setNombreCompleto("");
@@ -98,6 +96,7 @@ export function AddPoints({ register, control }) {
                   <InputGroup.Text id="Puntos">Puntos:</InputGroup.Text>
                   <Form.Control
                     type="number"
+                    min="0"
                     aria-describedby="Puntos"
                     {...register(`carnets.${index}.puntos_est`)}
                   />

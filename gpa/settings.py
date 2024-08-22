@@ -11,21 +11,26 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+env = environ.Env()
+environ.Env.read_env()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-+o1zy2d-s2$_)d9w-i42=il_-$s__tomchec%c&y@_^@kuz+t&'
+SECRET_KEY = env.str('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool('DEBUG', default=True)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=[])
+
+CORS_ORIGIN_ALLOW_ALL = True
 
 
 # Application definition
@@ -42,6 +47,8 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'gestion',
     'users',
+    'licencias',
+    'docentes',
 ]
 
 MIDDLEWARE = [
@@ -81,8 +88,12 @@ WSGI_APPLICATION = 'gpa.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': env.str('DATABASE_ENGINE'),
+        'NAME': env.str('DATABASE_NAME'),
+        'USER': env.str('DATABASE_USER', default=''),
+        'PASSWORD': env.str('DATABASE_PASSWORD', default=''),
+        'HOST': env.str('DATABASE_HOST', default=''),
+        'PORT': env.str('DATABASE_PORT', default=''),
     }
 }
 
@@ -135,8 +146,13 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
     ],
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.JSONParser',
+        'rest_framework.parsers.MultiPartParser',
+        'rest_framework.parsers.FormParser',
+    ],
 }
 
 # Media files
-MEDIA_URL = '/cidimec/gpa-react/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_URL = '/cidimec/gpa-imt/media/'
+MEDIA_ROOT = BASE_DIR / 'front-end' / 'media'

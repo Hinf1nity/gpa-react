@@ -13,8 +13,8 @@ from rest_framework.authentication import TokenAuthentication
 class DocentesLicenciasView(viewsets.ViewSet):
     queryset = permisos.objects.all()
     serializer_class = PermisoSerializer
-    # permission_classes = [IsAuthenticated]
-    # authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
 
     def list(self, request):
         permisos_list = []

@@ -31,7 +31,6 @@ export function EstudiantesPage() {
       try {
         const response = await getActivities();
         setActividades(response.data);
-        console.log(response.data);
       } catch (error) {
         console.log("Error al obtener las actividades");
       }
@@ -46,7 +45,6 @@ export function EstudiantesPage() {
         return;
       } else {
         const carnet = data.carnet;
-        console.log(carnet);
         toNavigate(`/cidimec/gpa-imt/${carnet}`);
       }
     } catch (error) {
@@ -55,11 +53,9 @@ export function EstudiantesPage() {
   });
 
   const handleInputChange = (carnet) => {
-    console.log(carnet);
     getUser(carnet)
       .then((response) => {
         setNombreCompleto(response.data[0].nombre);
-        console.log(nombre_completo);
       })
       .catch((error) => {
         setNombreCompleto("");

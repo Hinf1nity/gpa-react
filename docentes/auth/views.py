@@ -22,7 +22,7 @@ class UserAuth(viewsets.ViewSet):
 
         user = authenticate(username=username, password=password)
 
-        if not user or not user.is_staff:
+        if not user:
             return Response({'error': 'Credenciales inválidas'}, status=status.HTTP_401_UNAUTHORIZED)
 
         token, created = Token.objects.get_or_create(user=user)
