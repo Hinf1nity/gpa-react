@@ -18,14 +18,13 @@ class EstudiantesView(viewsets.ViewSet):
     permission_classes = [IsAdminUser]
 
     def create(self, request):
-        print(request.data)
+        # print(request.data)
         if request.FILES.get('archivo[]') != None:
             archivo = request.FILES.get('archivo[]')
             self.guardar_archivo(archivo)
             response = {'message': 'Created successfully'}
             return Response(response, status=status.HTTP_201_CREATED)
         else:
-            print('No hay archivo')
             return Response({'message': 'Archivo no encontrado'}, status=status.HTTP_400_BAD_REQUEST)
 
     def encontrar_valor(self, archivo_excel, valor_a_buscar):
@@ -51,8 +50,8 @@ class EstudiantesView(viewsets.ViewSet):
         df = df.iloc[fila_encontrada - 1:]
         df = df.reset_index(drop=True)
         for i in range(len(df.axes[0])):
-            print(df.iloc[i]['ESTUDIANTE'])
-            print(df.iloc[i]['CI'])
+            # print(df.iloc[i]['ESTUDIANTE'])
+            # print(df.iloc[i]['CI'])
             if estudiante.objects.filter(ci=df.iloc[i]['CI']).exists() == False:
                 estudiante.objects.create(
                     nombre=df.iloc[i]['ESTUDIANTE'],

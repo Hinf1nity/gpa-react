@@ -87,8 +87,14 @@ export function GestionPage() {
       handleShowInput("Proximamente");
       reset();
     } catch (error) {
+      if (error.response.data.carnets) {
+        toast.error(
+          `Error al guardar puntos, carnet: ${error.response.data.carnets}`
+        );
+      } else {
+        toast.error("Error al postear la actividad");
+      }
       console.log("Error al postear la actividad");
-      console.error(error.message);
     }
   };
 
@@ -100,6 +106,7 @@ export function GestionPage() {
       handleShowInput("Proximamente");
       resetUpdate();
     } catch (error) {
+      toast.error("Error al actualizar la actividad");
       console.log("Error al actualizar la actividad");
       console.error(error.message);
     }
@@ -111,6 +118,7 @@ export function GestionPage() {
       toast.success("Estudiantes añadidos");
       resetFile();
     } catch (error) {
+      toast.error("Error al añadir estudiantes");
       console.log("Error al añadir estudiantes");
       console.error(error.message);
     }

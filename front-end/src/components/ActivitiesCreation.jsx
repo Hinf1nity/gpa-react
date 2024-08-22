@@ -26,6 +26,7 @@ export function ActivitiesCreation({
             <InputGroup.Text id="PuntosGpa">Puntos GPA:</InputGroup.Text>
             <Form.Control
               type="number"
+              min="0"
               aria-describedby="PuntosGpa"
               {...register("puntos_gpa", { required: true })}
             />

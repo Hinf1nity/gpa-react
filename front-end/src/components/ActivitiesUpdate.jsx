@@ -19,7 +19,8 @@ export function ActivitiesUpdate({
         <option>Seleccione una actividad</option>
         {actividades.map((actividad) => (
           <option key={actividad.id} value={actividad.actividades}>
-            {actividad.actividades} - {actividad.estado}
+            {actividad.actividades} - {actividad.estado} - Puntos GPA de la
+            actividad: {actividad.puntos_ac}
           </option>
         ))}
       </Form.Select>

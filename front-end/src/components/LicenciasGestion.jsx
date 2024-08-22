@@ -9,7 +9,6 @@ export function LicenciasGestion() {
     try {
       const response = await getLicencias();
       setLicencias(response.data);
-      console.log(response.data);
     } catch (error) {
       console.error(error);
       console.error(error.message);

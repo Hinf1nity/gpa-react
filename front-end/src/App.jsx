@@ -6,7 +6,11 @@ import { GestionPage } from "./pages/GestionPage";
 import { Login } from "./pages/Login";
 import { EstudiantesPage } from "./pages/EstudiantesPage";
 import { GpaPage } from "./pages/GpaPage";
+<<<<<<< Updated upstream
+=======
 import { RegistrarLicencia } from "./pages/RegistrarLicencia";
+import { DocentesPage } from "./pages/DocentesPage";
+>>>>>>> Stashed changes
 import { AuthProvider } from "./context/AuthProvider";
 import { UseAuth } from "./context/UseAuth";
 
@@ -47,10 +51,17 @@ function AppRoutes() {
           )
         }
       />
+<<<<<<< Updated upstream
+=======
       <Route
         path="/cidimec/gpa-imt/registrar_licencia/:carnet"
         element={<RegistrarLicencia />}
       />
+      <Route
+        path="/cidimec/gpa-imt/consultas_docentes_permisos"
+        element={<DocentesPage />}
+      />
+>>>>>>> Stashed changes
     </Routes>
   );
 }

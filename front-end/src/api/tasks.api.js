@@ -69,6 +69,8 @@ export const postStudents = (data) => {
     },
   });
 };
+<<<<<<< Updated upstream
+=======
 
 // Licencias
 export const getMaterias = () => userApi.get("licencias/materias/");
@@ -108,3 +110,9 @@ export const updateLicenciaEstudiante = (id, data) => {
     },
   });
 };
+
+// Docentes
+export const getLicenciasDocentes = () => {
+  return userApi.get("docentes/licencias/");
+};
+>>>>>>> Stashed changes
