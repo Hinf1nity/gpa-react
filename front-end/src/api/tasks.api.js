@@ -67,3 +67,50 @@ export const postStudents = (data) => {
     },
   });
 };
+<<<<<<< Updated upstream
+=======
+
+// Licencias
+export const getMaterias = () => userApi.get("licencias/materias/");
+export const getLicenciasEstudiante = (ci) =>
+  userApi.get(`licencias/create_licencias/${ci}/`);
+export const postLicencia = (data) =>
+  userApi.post("licencias/create_licencias/", data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
+export const getLicencias = () => {
+  const token = getAccessToken();
+  return userApi.get("gestion/licencias/", {
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Authorization: `Token ${token}`,
+    },
+  });
+};
+
+export const updateLicencia = (id, data) => {
+  const token = getAccessToken();
+  return userApi.put(`gestion/licencias/${id}/`, data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Authorization: `Token ${token}`,
+    },
+  });
+};
+
+export const updateLicenciaEstudiante = (id, data) => {
+  return userApi.put(`licencias/create_licencias/${id}/`, data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};
+
+// Docentes
+export const getLicenciasDocentes = () => {
+  return userApi.get("docentes/licencias/");
+};
+>>>>>>> Stashed changes
