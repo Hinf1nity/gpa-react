@@ -58,7 +58,8 @@ export function GestionPage() {
     try {
       const response = await getActivities();
       setActividades(
-        response.data.filter((actividad) => actividad.estado !== "Finalizada")
+        //response.data.filter((actividad) => actividad.estado !== "Finalizada")
+        response.data
       );
     } catch (error) {
       console.error(error.message);

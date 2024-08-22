@@ -96,6 +96,7 @@ export function AddPoints({ register, control }) {
                   <InputGroup.Text id="Puntos">Puntos:</InputGroup.Text>
                   <Form.Control
                     type="number"
+                    min="0"
                     aria-describedby="Puntos"
                     {...register(`carnets.${index}.puntos_est`)}
                   />
