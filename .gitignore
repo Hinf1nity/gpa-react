@@ -14,10 +14,9 @@ __pycache__/
 node_modules/
 *.log
 *.xlsx
-<<<<<<< Updated upstream
+!PruebaGPA.xlsx
+!PruebaEstudiantes.xlsx
 .env
 */*.zip
 gpa/.env
-=======
 *.env
->>>>>>> Stashed changes
