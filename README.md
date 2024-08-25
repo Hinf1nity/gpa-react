@@ -91,7 +91,7 @@ Sigue los pasos a continuación para configurar el proyecto en tu entorno local:
 - **Backend (Django Rest Framework):**
   - `licencias/`: Aplicación principal para la gestión de licencias de los estudiantes.
   - `gpa/`: Aplicación donde se encuentran las configuraciones y urls principales de la pagina.
-  - `gestion/`: Aplicación para el director de carrera, donde se tiene la autenticación, las licencias pedidas, las actividades extracurriculares creadas y la pagina para crear nuevos estudiantes en la base de datos.
+  - `gestion/`: Aplicación para el director de carrera, donde se tiene la autenticación, las licencias pedidas, las actividades extracurriculares creadas y la pagina para crear nuevos estudiantes en la base de datos. En esta carpeta debe de estar el archivo .env.
   - `users/`: Aplicación de únicamente envio de datos al frontend con información de los estudiantes, sus licencias y putnos GPA.
   - `docentes/`: Apliación para docentes, donde se devuelve las licencias de los estudiantes.
   - `requirements.txt`: Lista de dependencias del backend.
