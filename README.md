@@ -91,7 +91,7 @@ Sigue los pasos a continuación para configurar el proyecto en tu entorno local:
 - **Backend (Django Rest Framework):**
   - `licencias/`: Aplicación principal para la gestión de licencias de los estudiantes.
   - `gpa/`: Aplicación donde se encuentran las configuraciones y urls principales de la pagina.
-  - `gestion/`: Aplicación para el director de carrera, donde se tiene la autenticación, las licencias pedidas, las actividades extracurriculares creadas y la pagina para crear nuevos estudiantes en la base de datos. En esta carpeta debe de estar el archivo .env.
+  - `gestion/`: Aplicación para el director de carrera, donde se tiene la autenticación, las licencias pedidas, las actividades extracurriculares creadas y la pagina para crear nuevos estudiantes en la base de datos.
   - `users/`: Aplicación de únicamente envio de datos al frontend con información de los estudiantes, sus licencias y putnos GPA.
   - `docentes/`: Apliación para docentes, donde se devuelve las licencias de los estudiantes.
   - `requirements.txt`: Lista de dependencias del backend.
@@ -101,6 +101,15 @@ Sigue los pasos a continuación para configurar el proyecto en tu entorno local:
   - `src/`: Componentes y lógica de la interfaz de usuario.
   - `public/`: Archivos estáticos para el frontend.
   - `package.json`: Dependencias y scripts del proyecto de React.
+
+## Variables de entorno
+
+En la carpeta `gpa/` debe de estar el archivo .env con las siguientes variables de entorno:
+- DEBUG
+- SECRET_KEY
+- ALLOWED_HOSTS
+- DATABASE_ENGINE
+- DATABASE_NAME
 
 ## Cosas por hacer
 
