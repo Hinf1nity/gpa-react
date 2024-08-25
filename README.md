@@ -9,7 +9,7 @@ Este repositorio contiene el código fuente de la página web para la gestión d
 - **Interfaz de Usuario:** Interfaz construida con React.
 - **API RESTful:** Backend desarrollado con Django Rest Framework, ofreciendo endpoints para gestionar licencias y puntos.
 - **Autenticación y Autorización:** Sistema seguro de autenticación con JWT (JSON Web Tokens).
-- **Subir archivos de excel:** El formato para subir los puntos de GPA con un archivo excel se encuentra en el archivo [PruebaGPA](../../PruebaGPA.xlsx). El formato para subir información de los estudiantes [PruebaEstudiantes](PruebaEstudiantes.xlsx)
+- **Subir archivos de excel:** El formato para subir los puntos de GPA con un archivo excel se encuentra en el archivo [PruebaGPA](PruebaGPA.xlsx). El formato para subir información de los estudiantes [PruebaEstudiantes](PruebaEstudiantes.xlsx)
 
 ## Requisitos Previos
 
